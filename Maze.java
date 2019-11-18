@@ -12,11 +12,15 @@ public class Maze {
     private Random random;
     private ArrayList<Cell> visited;
     private ArrayList<Cell> path;
+    private int pathLength;
+    private int visitedCells;
     
     public Maze(int size) {
         this.size = size;
         maze = new Cell[size][size];
         random = new Random();
+        pathLength = 0;
+        visitedCells = 0;
     }
 
 
@@ -62,19 +66,19 @@ public class Maze {
             for (int j = 0; j < size; j++) {
                 Cell cell = maze[i][j];
 
-                boolean northCell = (i + 1 >= 0) && (i + 1 < size) && (j >= 0) && (j < size);
-                boolean southCell = (i - 1 >= 0) && (i - 1 < size) && (j >= 0) && (j < size);
+                boolean northCell = (i - 1 >= 0) && (i - 1 < size) && (j >= 0) && (j < size);
+                boolean southCell = (i + 1 >= 0) && (i + 1 < size) && (j >= 0) && (j < size);
                 boolean eastCell = (i >= 0) && (i < size) && (j + 1 >= 0) && (j + 1 < size);
                 boolean westCell = (i >= 0) && (i < size) && (j - 1 >= 0) && (j - 1 < size);
 
                 if (northCell)
-                    cell.addNeighbor(maze[i + 1][j]);
+                    cell.addNeighbor(maze[i - 1][j]);
                 
                 if (eastCell)
                     cell.addNeighbor(maze[i][j + 1]);
                 
                 if (southCell)
-                    cell.addNeighbor(maze[i - 1][j]);
+                    cell.addNeighbor(maze[i + 1][j]);
                 
                 if (westCell)
                     cell.addNeighbor(maze[i][j - 1]);
@@ -130,6 +134,7 @@ public class Maze {
             
             ArrayList<Cell> neighbors = current.getNeighbors();
             boolean debounce = false;
+            
             for (int i = 0; i < neighbors.size() && debounce == false; i++) {
                 Cell cell = neighbors.get(i);
                 
@@ -153,9 +158,10 @@ public class Maze {
             if (debounce == false && stack.size() > 0) {
                 stack.pop();
             } 
-            
-            
         }
+        
+        pathLength = path.size();
+        visitedCells = visited.size();
     }
     
    
@@ -280,11 +286,14 @@ public class Maze {
         Maze maze1 = new Maze(10);
         maze1.generateMaze();
         maze1.printMaze();
-        System.out.println("\n----------------------------------------------------------------");
+        System.out.println("\n");
         maze1.DFS();
         maze1.printPath();
-        System.out.println("\n----------------------------------------------------------------");
+        System.out.println("\n");
         maze1.printMaze();
+        System.out.println("\n");
+        System.out.println("Length of path: " + maze1.pathLength);
+        System.out.println("Visited cells: " + maze1.visitedCells);
         
     }
 }
