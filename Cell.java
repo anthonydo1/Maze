@@ -10,7 +10,7 @@ public class Cell {
     private boolean east;
     private boolean west;
     private ArrayList<Cell> neighbors;
-    private boolean searched;
+    private int order;
     
     public Cell(int row, int column) {
         this.row = row;
@@ -20,10 +20,18 @@ public class Cell {
         this.east = true;
         this.west = true;
         this.neighbors = new ArrayList<>();
-        this.searched = false;
+        this.order = -1;
     }
     
-
+    public void setOrder(int num) {
+        order = num;
+    }
+    
+    
+    public int getOrder() {
+        return order;
+    }
+    
     public void addNeighbor(Cell cell) {
         neighbors.add(cell);
     }
@@ -33,9 +41,6 @@ public class Cell {
         return neighbors;
     }
     
-    public boolean hasBeenSearched() {
-        return searched;
-    }
     
     public boolean hasFullWalls() {
         return north && south && east && west;
