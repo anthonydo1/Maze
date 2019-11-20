@@ -70,9 +70,6 @@ public class Maze {
                 boolean southCell = (i + 1 >= 0) && (i + 1 < size) && (j >= 0) && (j < size);
                 boolean eastCell = (i >= 0) && (i < size) && (j + 1 >= 0) && (j + 1 < size);
                 boolean westCell = (i >= 0) && (i < size) && (j - 1 >= 0) && (j - 1 < size);
-
-                if (northCell)
-                    cell.addNeighbor(maze[i - 1][j]);
                 
                 if (eastCell)
                     cell.addNeighbor(maze[i][j + 1]);
@@ -82,6 +79,9 @@ public class Maze {
                 
                 if (westCell)
                     cell.addNeighbor(maze[i][j - 1]);
+                
+                if (northCell)
+                    cell.addNeighbor(maze[i - 1][j]);
             }
         }
     }
@@ -139,13 +139,13 @@ public class Maze {
                 Cell cell = neighbors.get(i);
                 
                 if (!visited.contains(cell)) {
-                    if (current.getColumn() == cell.getColumn() + 1 && !current.getWestWall() && !cell.getEastWall()) {
+                	if (current.getRow() == cell.getRow() + 1 && !current.getNorthWall() && !cell.getSouthWall()) {
+                        debounce = true;
+                        stack.push(cell);
+                    } else if (current.getColumn() == cell.getColumn() + 1 && !current.getWestWall() && !cell.getEastWall()) {
                         debounce = true;
                         stack.push(cell);
                     } else if (current.getRow() == cell.getRow() - 1 &&  !current.getSouthWall() && !cell.getNorthWall()) {
-                        debounce = true;
-                        stack.push(cell);
-                    } else if (current.getRow() == cell.getRow() + 1 && !current.getNorthWall() && !cell.getSouthWall()) {
                         debounce = true;
                         stack.push(cell);
                     } else if (current.getColumn() == cell.getColumn() - 1 && !current.getEastWall() && !cell.getWestWall()) {
